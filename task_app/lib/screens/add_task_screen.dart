@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:task_app/models/task.dart';
+import 'package:task_app/models/task_data.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  final Function addTaskCallback;
-
-  AddTaskScreen(this.addTaskCallback);
   @override
   Widget build(BuildContext context) {
     String newTaskTitle = '';
@@ -40,7 +40,13 @@ class AddTaskScreen extends StatelessWidget {
             ),
             FilledButton(
               onPressed: () {
-                addTaskCallback(newTaskTitle);
+                if (newTaskTitle.isNotEmpty) {
+                  Provider.of<TaskData>(context, listen: false)
+                      .addTask(newTaskTitle);
+                  Navigator.pop(context);
+                } else {
+                  Navigator.pop(context);
+                }
               },
               child: Text('Add'),
               style: ButtonStyle(
